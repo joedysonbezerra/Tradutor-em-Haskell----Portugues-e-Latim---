@@ -1,0 +1,1 @@
+# Tradutor-portugues-latim-Haskell
