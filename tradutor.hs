@@ -1,16 +1,15 @@
-junta :: String -> [String] --"eu tu ele" e transforma em ["eu","tu","ele"] quem faz é o words ele quer que a gente faça essa função words
-junta x = words x
+stringParaLista :: String -> [String] --"eu tu ele" e transforma em ["eu","tu","ele"] quem faz é o words ele quer que a gente faça essa função words
+stringParaLista x = words x
 
-separa :: [String]->String 
-separa [] = []
-separa (a:b) = tradutor a ++" "++ separa b
+tradutor :: [String]->String 
+tradutor [] = []
+tradutor (a:b) = dicionario a ++" "++ tradutor b 
 
-tradutor :: String -> String
-tradutor ("eu") = "Ego"
-tradutor ("tu") = "gay"
-tradutor ("ele") = "la" 
+dicionario :: String -> String
+dicionario ("eu") = "Ego"
+dicionario ("tu") = "y"
+dicionario ("ele") = "x" 
+dicionario (x) = x
 
-
-principal :: String -> String
-principal x = separa (junta x)
-
+start :: String -> String
+start x = tradutor (stringParaLista x)
