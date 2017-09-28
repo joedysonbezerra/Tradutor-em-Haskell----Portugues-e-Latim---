@@ -1,10 +1,3 @@
-stringParaLista :: String -> [String] --"eu tu ele" e transforma em ["eu","tu","ele"] quem faz é o words ele quer que a gente faça essa função words
-stringParaLista x = words x
-
-tradutor :: [String]->String 
-tradutor [] = []
-tradutor (a:b) = dicionario a ++" "++ tradutor b 
-
 dicionario :: String -> String
 
 -- Português - Latim
@@ -35,4 +28,10 @@ dicionario ("domum") = "casa"  -- 10
 dicionario (x) = x
 
 start :: String -> String
-start x = tradutor (stringParaLista x)
+start x = tradutor x [] []
+
+
+tradutor :: String -> String -> String -> String
+tradutor (' ':b) c d = tradutor b (c ++ " " ++ dicionario d) []
+tradutor []      c d = c ++ " " ++ dicionario d
+tradutor (a:b)   c d = tradutor b c (d ++ [a])
