@@ -1,13 +1,18 @@
+import Data.Char
 import System.IO
-import Data.Char(toUpper)
+
 
 
 main :: IO()
 main = do
        frase <- readFile "frase-traduzir.txt"
-       writeFile "frase-traduzida.txt" (tradutor frase [] [])
+       writeFile "frase-traduzida.txt" (tradutor [(minusculo letra) | letra <- frase] [] [])
        putStrLn "Frase Traduzida com Sucesso!"
 
+
+minusculo :: Char -> Char
+minusculo c | ord c <= 90 && ord c >= 65 = chr (ord c + 32)
+            | otherwise = c
 
 
 tradutor :: String -> String -> String -> String
@@ -23,7 +28,7 @@ dicionario :: String -> String
 -- Português - Latim
 
 dicionario ("eu") = "ego" -- 1
-dicionario ("tu") = "vos" -- 2
+dicionario ("pedra") = "lapis" -- 2
 dicionario ("ele") = "quod" -- 3
 dicionario ("ela") = "quæ"  -- 4
 dicionario ("nos") = "nobis"  -- 5
@@ -34,7 +39,7 @@ dicionario ("sua") = "vestra"  -- 9
 dicionario ("casa") = "domum"  -- 10
 dicionario ("primeiro") = "primus"  -- 11
 dicionario ("justiça") = "iustitia"  -- 12
-dicionario ("demais") = "etiam"  -- 13
+dicionario ("lapis") = "plumbum"  -- 13
 dicionario ("coisas") = "supellectilem"  -- 14
 dicionario ("senhor") = "dominus"  -- 15
 dicionario ("mão") = "manibus"  -- 16
@@ -77,8 +82,8 @@ dicionario ("pao") = "panem"  -- 50
 -- Latim - Português
 
 dicionario ("ego") = "eu" -- 1
-dicionario ("vos") = "tu" -- 2
-dicionario ("quod") = "ele" -- 3
+dicionario ("lapiss") = "pedra" -- 2
+dicionario ("quodd") = "ele" -- 3
 dicionario ("quæ") = "ela"  -- 4
 dicionario ("nobis") = "nos"  -- 5
 dicionario ("vos") = "voce"  -- 6
@@ -88,7 +93,7 @@ dicionario ("vestra") = "sua"  -- 9
 dicionario ("domum") = "casa"  -- 10
 dicionario ("primus") = "primeiro"  -- 11
 dicionario ("iustitia") = "justiça"  -- 12
-dicionario ("etiam") = "demais"  -- 13
+dicionario ("plumbum") = "lapis"  -- 13
 dicionario ("supellectilem") = "coisas"  -- 14
 dicionario ("dominus") = "senhor"  -- 15
 dicionario ("manibus") = "mão"  -- 16
@@ -96,7 +101,7 @@ dicionario ("bonum") = "boa"  -- 17
 dicionario ("non") = "não"  -- 18
 dicionario ("etiam") = "sim"  -- 19
 dicionario ("auxilium") = "ajudo"  -- 20
-dicionario ("estudo") = "studium"  -- 21
+dicionario ("studium") = "estudos"  -- 21
 dicionario ("modum") = "efeito"  -- 22
 dicionario ("demanda") = "procura"  -- 23
 dicionario ("analysis") = "analise"  -- 24
@@ -105,7 +110,7 @@ dicionario ("infirmu") = "enfermo"  -- 26
 dicionario ("stellionatu") = "estelionato"  -- 27
 dicionario ("stilu") = "estilo"  -- 28
 dicionario ("imbecille") = "imbecil"  -- 29
-dicionario ("teoria") = "doctrina"  -- 30
+dicionario ("doctrina") = "teoria"  -- 30
 dicionario ("valorem") = "valor"  -- 31
 dicionario ("notitia") = "dados"  -- 32
 dicionario ("hominem") = "pessoa"  -- 33
@@ -122,7 +127,7 @@ dicionario ("malum") = "maça"  -- 43
 dicionario ("funem") = "corda"  -- 44
 dicionario ("metus") = "meia"  -- 45
 dicionario ("medicus") = "medico"  -- 46
-dicionario ("terra") = "terra"  -- 47
+-- dicionario ("terra") = "terra"  -- 47
 dicionario ("puer") = "crianca"  -- 48
 dicionario ("vinum") = "vinho"  -- 49
 dicionario ("panem") = "pao"  -- 50
