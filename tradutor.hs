@@ -1,37 +1,45 @@
-dicionario :: String -> String
+import System.IO
+import Data.Char(toUpper)
 
--- Português - Latim
 
-dicionario ("eu") = "ego" -- 1
-dicionario ("tu") = "vos" -- 2
-dicionario ("ele") = "quod" -- 3
-dicionario ("ela") = "quæ"  -- 4
-dicionario ("nos") = "nobis"  -- 5
-dicionario ("voce") = "vos"  -- 6
-dicionario ("vamos") = "abeamus"  -- 7
-dicionario ("para") = "ut"  -- 8
-dicionario ("sua") = "vestra"  -- 9
-dicionario ("casa") = "domum"  -- 10
+main :: IO()
+main = do
+       frase <- readFile "frase-traduzir.txt"
+       writeFile "frase-traduzida.txt" (tradutor frase [] [])
 
--- Latim - Português
-
-dicionario ("ego") = "eu" -- 1
-dicionario ("vos") = "tu" -- 2
-dicionario ("quod") = "ele" -- 3
-dicionario ("quæ") = "ela"  -- 4
-dicionario ("nobis") = "nos"  -- 5
-dicionario ("vos") = "voce"  -- 6
-dicionario ("abeamus") = "vamos"  -- 7
-dicionario ("ut") = "para"  -- 8
-dicionario ("vestra") = "sua"  -- 9
-dicionario ("domum") = "casa"  -- 10
-dicionario (x) = x
-
-start :: String -> String
-start x = tradutor x [] []
 
 
 tradutor :: String -> String -> String -> String
-tradutor (' ':b) c d = tradutor b (c ++ " " ++ dicionario d) []
-tradutor []      c d = c ++ " " ++ dicionario d
-tradutor (a:b)   c d = tradutor b c (d ++ [a])
+tradutor (' ':b)  c d = tradutor b (c ++ " " ++ dicionario d) []
+tradutor ('\n':b) c d = tradutor b (c ++ " " ++ dicionario d) []
+tradutor []       c d = c ++ " " ++ dicionario d
+tradutor (a:b)    c d = tradutor b c (d ++ [a])
+
+
+
+dicionario :: String -> String
+
+-- Português -> Latim
+dicionario "eu" = "ego"
+dicionario "tu" = "vos"
+dicionario "ele" = "quod"
+dicionario "ela" = "quae"
+dicionario "nos" = "nobis"
+dicionario "vamos" = "abeamus"
+dicionario "para" = "ut"
+dicionario "sua" = "vestra"
+dicionario "casa" = "domum"
+
+-- Latim -> Português
+dicionario "ego" = "eu"
+dicionario "vos" = "tu"
+dicionario "quod" = "ele"
+dicionario "quae" = "ela"
+dicionario "nobis" = "nos"
+dicionario "abeamus" = "vamos"
+dicionario "ut" = "para"
+dicionario "vestra" = "sua"
+dicionario "domum" = "casa"
+
+-- palavra não reconhecida
+dicionario x = x

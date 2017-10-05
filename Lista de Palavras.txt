@@ -1,0 +1,12 @@
+PT          LATIM
+
+
+eu          ego
+tu          vos
+ele         quod
+ela         quae
+nos         nobis
+vamos       abeamus
+para        ut
+sua         vestra
+casa        domum
