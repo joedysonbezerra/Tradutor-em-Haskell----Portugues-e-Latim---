@@ -5,9 +5,10 @@ import System.IO
 
 main :: IO()
 main = do
-       frase <- readFile "frase-traduzir.txt"
-       writeFile "frase-traduzida.txt" (tradutor [(minusculo letra) | letra <- frase] [] [])
-       putStrLn "Frase Traduzida com Sucesso!"
+        frase <- readFile "frase-traduzir.txt"
+        writeFile "frase-traduzida.txt" (traduzir [(minusculo letra) | letra <- frase])
+        putStrLn (traduzir [(minusculo letra) | letra <- frase])
+
 
 
 minusculo :: Char -> Char
@@ -15,122 +16,259 @@ minusculo c | ord c <= 90 && ord c >= 65 = chr (ord c + 32)
             | otherwise = c
 
 
-tradutor :: String -> String -> String -> String
-tradutor (' ':b)  c d = tradutor b (c ++ " " ++ dicionario d) []
-tradutor ('\n':b) c d = tradutor b (c ++ " " ++ dicionario d) []
-tradutor []       c d = c ++ " " ++ dicionario d
-tradutor (a:b)    c d = tradutor b c (d ++ [a])
+
+traduzir :: String -> String
+traduzir ('p' : texto) = tradutorPtLa texto [] []
+traduzir ('l' : texto) = tradutorLaPt texto [] []
+traduzir texto = "A lingua do texto nao foi reconhecida"
+
+
+tradutorPtLa :: String -> String -> String -> String
+tradutorPtLa (' ' : b) c d = tradutorPtLa b (c ++ " " ++ dicionarioPtLa d) []
+tradutorPtLa ('\n' : b) c d = tradutorPtLa b (c ++ " " ++ dicionarioPtLa d) []
+tradutorPtLa [] c d = c ++ " " ++ dicionarioPtLa d
+tradutorPtLa (a : b) c d = tradutorPtLa b c (d ++ [a])
 
 
 
-dicionario :: String -> String
-
--- Português - Latim
-
-dicionario ("eu") = "ego" -- 1
-dicionario ("pedra") = "lapis" -- 2
-dicionario ("ele") = "quod" -- 3
-dicionario ("ela") = "quæ"  -- 4
-dicionario ("nos") = "nobis"  -- 5
-dicionario ("voce") = "vos"  -- 6
-dicionario ("vamos") = "abeamus"  -- 7
-dicionario ("para") = "ut"  -- 8
-dicionario ("sua") = "vestra"  -- 9
-dicionario ("casa") = "domum"  -- 10
-dicionario ("primeiro") = "primus"  -- 11
-dicionario ("justiça") = "iustitia"  -- 12
-dicionario ("lapis") = "plumbum"  -- 13
-dicionario ("coisas") = "supellectilem"  -- 14
-dicionario ("senhor") = "dominus"  -- 15
-dicionario ("mão") = "manibus"  -- 16
-dicionario ("boa") = "bonum"  -- 17
-dicionario ("não") = "non"  -- 18
-dicionario ("sim") = "etiam"  -- 19
-dicionario ("ajudo") = "auxilium"  -- 20
-dicionario ("estudo") = "studium"  -- 21
-dicionario ("efeito") = "modum"  -- 22
-dicionario ("procura") = "demanda"  -- 23
-dicionario ("analise") = "analysis"  -- 24
-dicionario ("e") = "quod"  -- 25
-dicionario ("enfermo") = "infirmu"  -- 26
-dicionario ("estelionato") = "stellionatu"  -- 27
-dicionario ("estilo") = "stilu"  -- 28
-dicionario ("imbecil") = "imbecille"  -- 29
-dicionario ("teoria") = "doctrina"  -- 30
-dicionario ("valor") = "valorem"  -- 31
-dicionario ("dados") = "notitia"  -- 32
-dicionario ("pessoa") = "hominem"  -- 33
-dicionario ("arvore") = "lignum"  -- 34
-dicionario ("laranja") = "aurantiaco"  -- 35
-dicionario ("renda") = "reditus"  -- 36
-dicionario ("mercado") = "forum"  -- 37
-dicionario ("maior") = "magis"  -- 38
-dicionario ("politica") = "consilium"  -- 39
-dicionario ("ataque") = "impetus"  -- 40
-dicionario ("agua") = "aqua"  -- 41
-dicionario ("corrupcao") = "corruptio"  -- 42
-dicionario ("maça") = "malum"  -- 43
-dicionario ("corda") = "funem"  -- 44
-dicionario ("meia") = "metus"  -- 45
-dicionario ("medico") = "medicus"  -- 46
-dicionario ("terra") = "terra"  -- 47
-dicionario ("crianca") = "puer"  -- 48
-dicionario ("vinho") = "vinum"  -- 49
-dicionario ("pao") = "panem"  -- 50
+tradutorLaPt :: String -> String -> String -> String
+tradutorLaPt (' ' : b) c d = tradutorLaPt b (c ++ " " ++ dicionarioLaPt d) []
+tradutorLaPt ('\n' : b) c d = tradutorLaPt b (c ++ " " ++ dicionarioLaPt d) []
+tradutorLaPt [] c d = c ++ " " ++ dicionarioLaPt d
+tradutorLaPt (a : b) c d = tradutorLaPt b c (d ++ [a])
 
 
--- Latim - Português
 
-dicionario ("ego") = "eu" -- 1
-dicionario ("lapiss") = "pedra" -- 2
-dicionario ("quodd") = "ele" -- 3
-dicionario ("quæ") = "ela"  -- 4
-dicionario ("nobis") = "nos"  -- 5
-dicionario ("vos") = "voce"  -- 6
-dicionario ("abeamus") = "vamos"  -- 7
-dicionario ("ut") = "para"  -- 8
-dicionario ("vestra") = "sua"  -- 9
-dicionario ("domum") = "casa"  -- 10
-dicionario ("primus") = "primeiro"  -- 11
-dicionario ("iustitia") = "justiça"  -- 12
-dicionario ("plumbum") = "lapis"  -- 13
-dicionario ("supellectilem") = "coisas"  -- 14
-dicionario ("dominus") = "senhor"  -- 15
-dicionario ("manibus") = "mão"  -- 16
-dicionario ("bonum") = "boa"  -- 17
-dicionario ("non") = "não"  -- 18
-dicionario ("etiam") = "sim"  -- 19
-dicionario ("auxilium") = "ajudo"  -- 20
-dicionario ("studium") = "estudos"  -- 21
-dicionario ("modum") = "efeito"  -- 22
-dicionario ("demanda") = "procura"  -- 23
-dicionario ("analysis") = "analise"  -- 24
-dicionario ("quod") = "e"  -- 25
-dicionario ("infirmu") = "enfermo"  -- 26
-dicionario ("stellionatu") = "estelionato"  -- 27
-dicionario ("stilu") = "estilo"  -- 28
-dicionario ("imbecille") = "imbecil"  -- 29
-dicionario ("doctrina") = "teoria"  -- 30
-dicionario ("valorem") = "valor"  -- 31
-dicionario ("notitia") = "dados"  -- 32
-dicionario ("hominem") = "pessoa"  -- 33
-dicionario ("lignum") = "arvore"  -- 34
-dicionario ("aurantiaco") = "laranja"  -- 35
-dicionario ("reditus") = "renda"  -- 36
-dicionario ("forum") = "mercado"  -- 37
-dicionario ("magis") = "maior"  -- 38
-dicionario ("consilium") = "politica"  -- 39
-dicionario ("impetus") = "ataque"  -- 40
-dicionario ("aqua") = "agua"  -- 41
-dicionario ("corruptio") = "corrupcao"  -- 42
-dicionario ("malum") = "maça"  -- 43
-dicionario ("funem") = "corda"  -- 44
-dicionario ("metus") = "meia"  -- 45
-dicionario ("medicus") = "medico"  -- 46
--- dicionario ("terra") = "terra"  -- 47
-dicionario ("puer") = "crianca"  -- 48
-dicionario ("vinum") = "vinho"  -- 49
-dicionario ("panem") = "pao"  -- 50
+dicionarioPtLa :: String -> String
+-- Portugues -> Latim
+dicionarioPtLa "eu" = "ego"
+dicionarioPtLa "tu" = "vos"
+dicionarioPtLa "ele" = "quod"
+dicionarioPtLa "ela" = "quae"
+dicionarioPtLa "nos" = "nobis"
+dicionarioPtLa "vamos" = "abeamus"
+dicionarioPtLa "sua" = "vestra"
+dicionarioPtLa "casa" = "domum"
+dicionarioPtLa "primeiro" = "primus"
+dicionarioPtLa "justica" = "iustitia"
+dicionarioPtLa "lapis" = "plumbum"
+dicionarioPtLa "coisas" = "supellectilem"
+dicionarioPtLa "senhor" = "dominus"
+dicionarioPtLa "mao" = "manibus"
+dicionarioPtLa "boa" = "bonum"
+dicionarioPtLa "nao" = "non"
+dicionarioPtLa "sim" = "etiam"
+dicionarioPtLa "ajudo" = "auxilium"
+dicionarioPtLa "estudos" = "studium"
+dicionarioPtLa "efeito" = "modum"
+dicionarioPtLa "procura" = "demanda"
+dicionarioPtLa "analise" = "analysis"
+dicionarioPtLa "enfermo" = "infirmu"
+dicionarioPtLa "estelionato" = "stellionatu"
+dicionarioPtLa "estilo" = "stilu"
+dicionarioPtLa "imbecil" = "imbecille"
+dicionarioPtLa "teoria" = "doctrina"
+dicionarioPtLa "valor" = "valorem"
+dicionarioPtLa "dados" = "notitia"
+dicionarioPtLa "pessoa" = "hominem"
+dicionarioPtLa "arvore" = "lignum"
+dicionarioPtLa "laranja" = "aurantiaco"
+dicionarioPtLa "renda" = "reditus"
+dicionarioPtLa "mercado" = "forum"
+dicionarioPtLa "politica" = "consilium"
+dicionarioPtLa "ataque" = "impetus"
+dicionarioPtLa "agua" = "aqua"
+dicionarioPtLa "corrupcao" = "corruptio"
+dicionarioPtLa "maca" = "malum"
+dicionarioPtLa "corda" = "funem"
+dicionarioPtLa "meia" = "metus"
+dicionarioPtLa "medico" = "medicus"
+dicionarioPtLa "crianca" = "puer"
+dicionarioPtLa "vinho" = "vinum"
+dicionarioPtLa "pao" = "panem"
+dicionarioPtLa "mais" = "magis"
+dicionarioPtLa "forte" = "fortiori"
+dicionarioPtLa "lado" = "latere"
+dicionarioPtLa "o" = "domino"
+dicionarioPtLa "segundo" = "posteriori"
+dicionarioPtLa "razao" = "ratione"
+dicionarioPtLa "particular" = "remotis"
+dicionarioPtLa "sagrado" = "sacris"
+dicionarioPtLa "eterno" = "aeterno"
+dicionarioPtLa "convidativo" = "petamus"
+dicionarioPtLa "honroso" = "honesta"
+dicionarioPtLa "amigos" = "amicis"
+dicionarioPtLa "letras" = "epistolis"
+dicionarioPtLa "de" = "ab"
+dicionarioPtLa "isto" = "hoc"
+dicionarioPtLa "esta" = "hac"
+dicionarioPtLa "e" = "et"
+dicionarioPtLa "fundo" = "imo"
+dicionarioPtLa "coracao" = "corde"
+dicionarioPtLa "peito" = "pectore"
+dicionarioPtLa "berco" = "incunabulis"
+dicionarioPtLa "comeco" = "initio"
+dicionarioPtLa "enfurecido" = "irato"
+dicionarioPtLa "boca" = "ore"
+dicionarioPtLa "ouvido" = "aurem"
+dicionarioPtLa "origem" = "origine"
+dicionarioPtLa "um" = "uno"
+dicionarioPtLa "tudo" = "omnes"
+dicionarioPtLa "cidade" = "urbe"
+dicionarioPtLa "fundacao" = "condita"
+dicionarioPtLa "causa" = "causae"
+dicionarioPtLa "desvio" = "aberratio"
+dicionarioPtLa "ofensa" = "delicti"
+dicionarioPtLa "chega" = "venit"
+dicionarioPtLa "pra" = "ut"
+dicionarioPtLa "ca" = "hic"
+dicionarioPtLa "meu" = "mea"
+dicionarioPtLa "bem" = "tum"
+dicionarioPtLa "vou" = "autem"
+dicionarioPtLa "ensinar" = "doceat"
+dicionarioPtLa "nossa" = "noster"
+dicionarioPtLa "danca" = "chorus"
+dicionarioPtLa "estado" = "statum"
+dicionarioPtLa "do" = "auntem"
+dicionarioPtLa "chegou" = "advenimus"
+dicionarioPtLa "ficar" = "menere"
+dicionarioPtLa "nesse" = "inoc"
+dicionarioPtLa "swing" = "adductius"
+dicionarioPtLa "voce" = "vobis"
+dicionarioPtLa "tambem" = "item"
+dicionarioPtLa "entrar" = "intrabit"
+dicionarioPtLa "mexa" = "suscitare"
+dicionarioPtLa "pezinho" = "porphyrio"
+dicionarioPtLa "vai" = "erit"
+dicionarioPtLa "soltando" = "stillabunt"
+dicionarioPtLa "corpo" = "corpus"
+dicionarioPtLa "depois" = "post"
+dicionarioPtLa "abraca" = "cubantem"
+dicionarioPtLa "com" = "apud"
+dicionarioPtLa "carinho" = "affectio"
+dicionarioPtLa "gente" = "populus"
+dicionarioPtLa "pode" = "potes"
+dicionarioPtLa "fazer" = "facite"
+dicionarioPtLa "outra" = "alium"
+dicionarioPtLa "vez" = "tempus"
 
--- palavra não reconhecida
-dicionario x = x
+-- palavra nao reconhecida
+dicionarioPtLa x = x
+
+
+
+dicionarioLaPt :: String -> String
+-- Latim -> Portugues
+dicionarioLaPt "ego" = "eu"
+dicionarioLaPt "vos" = "tu"
+dicionarioLaPt "quod" = "ele"
+dicionarioLaPt "quae" = "ela"
+dicionarioLaPt "nobis" = "nos"
+dicionarioLaPt "abeamus" = "vamos"
+dicionarioLaPt "vestra" = "sua"
+dicionarioLaPt "domum" = "casa"
+dicionarioLaPt "primus" = "primeiro"
+dicionarioLaPt "iustitia" = "justica"
+dicionarioLaPt "plumbum" = "lapis"
+dicionarioLaPt "supellectilem" = "coisas"
+dicionarioLaPt "dominus" = "senhor"
+dicionarioLaPt "manibus" = "mao"
+dicionarioLaPt "bonum" = "boa"
+dicionarioLaPt "non" = "nao"
+dicionarioLaPt "etiam" = "sim"
+dicionarioLaPt "auxilium" = "ajudo"
+dicionarioLaPt "studium" = "estudos"
+dicionarioLaPt "modum" = "efeito"
+dicionarioLaPt "demanda" = "procura"
+dicionarioLaPt "analysis" = "analise"
+dicionarioLaPt "infirmu" = "enfermo"
+dicionarioLaPt "stellionatu" = "estelionato"
+dicionarioLaPt "stilu" = "estilo"
+dicionarioLaPt "imbecille" = "imbecil"
+dicionarioLaPt "doctrina" = "teoria"
+dicionarioLaPt "valorem" = "valor"
+dicionarioLaPt "notitia" = "dados"
+dicionarioLaPt "hominem" = "pessoa"
+dicionarioLaPt "lignum" = "arvore"
+dicionarioLaPt "aurantiaco" = "laranja"
+dicionarioLaPt "reditus" = "renda"
+dicionarioLaPt "forum" = "mercado"
+dicionarioLaPt "consilium" = "politica"
+dicionarioLaPt "impetus" = "ataque"
+dicionarioLaPt "aqua" = "agua"
+dicionarioLaPt "corruptio" = "corrupcao"
+dicionarioLaPt "malum" = "maca"
+dicionarioLaPt "funem" = "corda"
+dicionarioLaPt "metus" = "meia"
+dicionarioLaPt "medicus" = "medico"
+dicionarioLaPt "puer" = "crianca"
+dicionarioLaPt "vinum" = "vinho"
+dicionarioLaPt "panem" = "pao"
+dicionarioLaPt "magis" = "mais"
+dicionarioLaPt "fortiori" = "forte"
+dicionarioLaPt "latere" = "lado"
+dicionarioLaPt "domino" = "o"
+dicionarioLaPt "posteriori" = "segundo"
+dicionarioLaPt "ratione" = "razao"
+dicionarioLaPt "remotis" = "particular"
+dicionarioLaPt "sacris" = "sagrado"
+dicionarioLaPt "aeterno" = "eterno"
+dicionarioLaPt "petamus" = "convidativo"
+dicionarioLaPt "honesta" = "honroso"
+dicionarioLaPt "amicis" = "amigos"
+dicionarioLaPt "epistolis" = "letras"
+dicionarioLaPt "ab" = "de"
+dicionarioLaPt "hoc" = "isto"
+dicionarioLaPt "hac" = "esta"
+dicionarioLaPt "et" = "e"
+dicionarioLaPt "imo" = "fundo"
+dicionarioLaPt "corde" = "coracao"
+dicionarioLaPt "pectore" = "peito"
+dicionarioLaPt "incunabulis" = "berco"
+dicionarioLaPt "initio" = "comeco"
+dicionarioLaPt "irato" = "enfurecido"
+dicionarioLaPt "ore" = "boca"
+dicionarioLaPt "aurem" = "ouvido"
+dicionarioLaPt "origine" = "origem"
+dicionarioLaPt "uno" = "um"
+dicionarioLaPt "omnes" = "tudo"
+dicionarioLaPt "urbe" = "cidade"
+dicionarioLaPt "condita" = "fundacao"
+dicionarioLaPt "causae" = "causa"
+dicionarioLaPt "aberratio" = "desvio"
+dicionarioLaPt "delicti" = "ofensa"
+dicionarioLaPt "venit" = "chega"
+dicionarioLaPt "ut" = "pra"
+dicionarioLaPt "hic" = "ca"
+dicionarioLaPt "mea" = "meu"
+dicionarioLaPt "tum" = "bem"
+dicionarioLaPt "autem" = "vou"
+dicionarioLaPt "doceat" = "ensinar"
+dicionarioLaPt "noster" = "nossa"
+dicionarioLaPt "chorus" = "danca"
+dicionarioLaPt "statum" = "estado"
+dicionarioLaPt "auntem" = "do"
+dicionarioLaPt "advenimus" = "chegou"
+dicionarioLaPt "menere" = "ficar"
+dicionarioLaPt "inoc" = "nesse"
+dicionarioLaPt "adductius" = "swing"
+dicionarioLaPt "vobis" = "voce"
+dicionarioLaPt "item" = "tambem"
+dicionarioLaPt "intrabit" = "entrar"
+dicionarioLaPt "suscitare" = "mexa"
+dicionarioLaPt "porphyrio" = "pezinho"
+dicionarioLaPt "erit" = "vai"
+dicionarioLaPt "stillabunt" = "soltando"
+dicionarioLaPt "corpus" = "corpo"
+dicionarioLaPt "post" = "depois"
+dicionarioLaPt "cubantem" = "abraca"
+dicionarioLaPt "apud" = "com"
+dicionarioLaPt "affectio" = "carinho"
+dicionarioLaPt "populus" = "gente"
+dicionarioLaPt "potes" = "pode"
+dicionarioLaPt "facite" = "fazer"
+dicionarioLaPt "alium" = "outra"
+dicionarioLaPt "tempus" = "vez"
+
+-- palavra nao reconhecida
+dicionarioLaPt x = x
