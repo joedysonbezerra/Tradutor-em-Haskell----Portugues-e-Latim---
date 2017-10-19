@@ -8,9 +8,10 @@ main = do
         frase <- readFile "frase-traduzir.txt"
         writeFile "frase-traduzida.txt" (traduzir [(minusculo letra) | letra <- frase])
         putStrLn (traduzir [(minusculo letra) | letra <- frase])
+        putStrLn "\n Programa finalizado!"
 
 
-
+        
 minusculo :: Char -> Char
 minusculo c | ord c <= 90 && ord c >= 65 = chr (ord c + 32)
             | otherwise = c
@@ -18,8 +19,8 @@ minusculo c | ord c <= 90 && ord c >= 65 = chr (ord c + 32)
 
 
 traduzir :: String -> String
-traduzir ('p' : texto) = tradutorPtLa texto [] []
-traduzir ('l' : texto) = tradutorLaPt texto [] []
+traduzir ('p' : 't' : texto) = tradutorPtLa texto [] []
+traduzir ('l' : 'a' : texto) = tradutorLaPt texto [] []
 traduzir texto = "A lingua do texto nao foi reconhecida"
 
 
